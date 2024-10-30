@@ -6,23 +6,23 @@ date: 2024-10-30
 ---
 
 We are thrilled to announce the release of Kubewarden v1.18.0. For this release
-we have focused on achieving the level 3 of the [SLSA
-standard](https://slsa.dev/spec/v1.0/), in addition with minor bug fixes,
-added tests and developer tech debt improvements.
+we have focused on achieving level 3 of the [SLSA
+standard](https://slsa.dev/spec/v1.0/), in addition to minor bug fixes,
+added tests, and developer tech debt improvements.
 
 ## SLSA level 3
 
 Kubewarden has been at the forefront of Sigstore integration (being
-co-maintainers of upstream sigstore-rs Rust library), and have signed our
+co-maintainers of upstream the sigstore-rs Rust library), and have signed our
 artifacts and provided SBOMs for several years.
 
 For this cycle, we have made the necessary changes to our build pipelines to
-bump to the level 3 of SLSA. [SLSA](https://slsa.dev/spec/v1.0) is the standard
+bump to level 3 of SLSA. [SLSA](https://slsa.dev/spec/v1.0) is the standard
 for describing and improving supply chain security.
 
 To achieve [SLSA level 3](https://slsa.dev/spec/v1.0/levels#build-l3), projects
 need to provide a hardened build platform with strong tamper protection. All of
-this is stamped by providing signed provenance attestations, which inform of
+this is verified by providing signed provenance attestations, which verify
 the build process, build dependencies, and aid in replicating the builds.
 
 For us in Kubewarden this meant a slight refactor of our GitHub Actions
@@ -50,10 +50,10 @@ In Kubewarden we also use the following 3rd party dependencies:
   comes with provenance, and provides cached kubectl commands useful for airgap
   installs.
 
-We have decided to implement provenance for policies on a later date.
+We have decided to implement provenance for policies at a later date.
 Currently, policies can be either out of band OCI artifacts (usually from
 artifacthub.io), or just a YAML definition (e.g: CEL policies using
-[cel-policy](https://artifacthub.io/packages/kubewarden/cel-policy/cel-policy))
+[cel-policy](https://artifacthub.io/packages/kubewarden/cel-policy/cel-policy)),
 or Kyverno DSL policies using [kyverno-dsl
 -policy](https://github.com/kubewarden/kyverno-dsl-policy). In addition, all
 policies are sandboxed thanks to WebAssembly.
@@ -61,10 +61,10 @@ policies are sandboxed thanks to WebAssembly.
 ### Verifying the attestations
 
 For verifying the attestations, have a look at our
-[docs](https://docs.kubewarden.io/tutorials/verifying-kubewarden). As usual
+[docs](https://docs.kubewarden.io/tutorials/verifying-kubewarden). As usual,
 we sign our attestations via Sigstore with keyless workflow.
 
-The UX for verifying provenance attestations is still somewhat green across
+The UX for verifying provenance attestations is still somewhat unproven across
 this space. For binaries such as `kwctl` is as easy as:
 
 ```console
@@ -79,7 +79,7 @@ kubewarden/kwctl  https://slsa.dev/provenance/v1  .github/workflows/build.yml@re
 kubewarden/kwctl  https://slsa.dev/provenance/v1  .github/workflows/build.yml@refs/heads/main
 ```
 
-For container images it may mean first finding the attestation manifest index
+For container images, it may mean first finding the attestation manifest index
 layer, and then the attestation layer itself. If in doubt, read each project's
 developer docs in their respective GitHub repositories.
 
@@ -112,7 +112,7 @@ Here's our shortened resource types:
 ## Deprecation of CRDs version `v1alpha2`
 
 With this release, we are deprecating our CRDs version `v1alpha2` in favour of
-current `v1`. The current `v1` have been in use for several years already.
+the current `v1`. The current `v1` have been in use for several years already.
 There’s no action on the users side, since our controller already takes care of
 the migration.
 
