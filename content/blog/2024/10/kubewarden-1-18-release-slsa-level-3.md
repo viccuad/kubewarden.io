@@ -109,12 +109,12 @@ Here's our shortened resource types:
 | ClusterAdmissionPolicyGroups | **capg**  |
 | PolicyServers                | **ps**    |
 
-## Future deprecation of CRDs version `v1alpha2`
+## Deprecation of CRDs version `v1alpha2`
 
-In future releases, we intend to deprecate our CRDs version `v1alpha2` in
-favour of current `v1`. The current `v1` have been in use for several years
-already. There’s no action on the users side, since our controller already
-takes care of the migration.
+With this release, we are deprecating our CRDs version `v1alpha2` in favour of
+current `v1`. The current `v1` have been in use for several years already.
+There’s no action on the users side, since our controller already takes care of
+the migration.
 
 ## Getting in touch
 
