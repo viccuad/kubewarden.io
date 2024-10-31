@@ -8,16 +8,16 @@ date: 2024-10-30
 We are thrilled to announce the release of Kubewarden v1.18.0. For this release
 we have focused on achieving level 3 of the [SLSA
 standard](https://slsa.dev/spec/v1.0/), in addition to minor bug fixes,
-added tests, and developer tech debt improvements.
+adding tests, and developer tech debt improvements.
 
 ## SLSA level 3
 
 Kubewarden has been at the forefront of Sigstore integration (being
-co-maintainers of upstream the sigstore-rs Rust library), and have signed our
+co-maintainers of the upstream sigstore-rs Rust library), and have signed our
 artifacts and provided SBOMs for several years.
 
 For this cycle, we have made the necessary changes to our build pipelines to
-bump to level 3 of SLSA. [SLSA](https://slsa.dev/spec/v1.0) is the standard
+achieve level 3 of SLSA. [SLSA](https://slsa.dev/spec/v1.0) is the standard
 for describing and improving supply chain security.
 
 To achieve [SLSA level 3](https://slsa.dev/spec/v1.0/levels#build-l3), projects
@@ -37,7 +37,7 @@ Action.
 We now publish provenance attestations for:
 
 - Container images: shipped as a signed container image layer.
-- Helm charts in our OCI registry: shipped as a signed OCI artifact layer and
+- Helm charts in our OCI registry: shipped as a signed OCI artifact layer
   into GitHub's immutable attestation storage.
 - Our CLI utility `kwctl`: shipped into GitHub's immutable attestation storage.
 
@@ -79,7 +79,7 @@ kubewarden/kwctl  https://slsa.dev/provenance/v1  .github/workflows/build.yml@re
 kubewarden/kwctl  https://slsa.dev/provenance/v1  .github/workflows/build.yml@refs/heads/main
 ```
 
-For container images, it may mean first finding the attestation manifest index
+For container images, it means first finding the attestation manifest index
 layer, and then the attestation layer itself. If in doubt, read each project's
 developer docs in their respective GitHub repositories.
 
