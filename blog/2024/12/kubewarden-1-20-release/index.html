@@ -1,4 +1,4 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Kubewarden 1.20 release</title><link rel=icon type=image/svg href=/favicon.svg><link rel=mask-icon href=/favicon.svg><link rel=stylesheet type=text/css href=/sass/blog.min.css?1734534666><script async defer src=https://buttons.github.io/buttons.js></script><script type=text/javascript src=//cdn.bizible.com/scripts/bizible.js async></script></head><body><header><div class=sub-header><a href><img src=/images/logo-kubewarden.svg alt=Kubewarden></a>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Kubewarden 1.20 release</title><link rel=icon type=image/svg href=/favicon.svg><link rel=mask-icon href=/favicon.svg><link rel=stylesheet type=text/css href=/sass/blog.min.css?1734539156><script async defer src=https://buttons.github.io/buttons.js></script><script type=text/javascript src=//cdn.bizible.com/scripts/bizible.js async></script></head><body><header><div class=sub-header><a href><img src=/images/logo-kubewarden.svg alt=Kubewarden></a>
 <a href=#main-menu id=main-menu-toggle class=menu-toggle aria-label="Open main menu"><span aria-hidden=true></span><span aria-hidden=true></span><span aria-hidden=true></span></a><nav id=main-menu class=main-menu aria-label="Main menu"><a href=#main-menu-toggle id=main-menu-close class=menu-close aria-label="Close main menu"><span class=sr-only>Close main menu</span>
 <span class="fa fa-close" aria-hidden=true></span></a><h2 id=main-menu-heading class=sr-only>Main menu</h2><ul class=menu><li><a href="https://artifacthub.io/packages/search?kind=13&sort=relevance&page=1" target=_blank class="btn no-bg">Policies</a></li><li><a href=https://charts.kubewarden.io/ target=_blank class="btn no-bg">Helm Charts</a></li><li><a href=https://docs.kubewarden.io/ target=_blank class="btn no-bg">Docs</a></li><li><a href="https://kubernetes.slack.com/?redir=%2Fmessages%2Fkubewarden" target=_blank class="btn no-bg">Slack</a></li><li><a href=https://twitter.com/kubewarden target=_blank class="btn no-bg">Twitter</a></li><li><a href=/#get-in-touch target=_blank class="btn no-bg">Community</a></li><li><a href=/blog target=_blank class="btn no-bg">Blog</a></li><li><a href=https://github.com/kubewarden class="btn github"><img src=/images/icon-github.svg><span>Github</span></a></li></ul></nav><a href=#main-menu-toggle class=backdrop tabindex=-1 aria-hidden=true hidden></a></div></header><link rel=stylesheet href=/css/blog.css><section class=intro><div class=bg-primary><div class="wrap grid-one"><div><h1 style=color:#fff><a href=/blog>The Kubewarden blog</a>
 <a href=/blog/index.xml><img src=/images/icon-rss.svg class=fill-white height=20></a></h1></div></div></div></section><main><section class=wrap><article><h1>Kubewarden 1.20 release</h1><p>Author: <author>Víctor Cuadrado Juan</author></p><p>Published: <time>18 Dec 2024</time></p><div id=blog-post-content><p>We&rsquo;re excited to announce the release of Kubewarden v1.20! This release brings
@@ -7,14 +7,16 @@ The <code>kubewarden-controller</code> Helm chart has changed the <code>values.y
 for the OpenTelemetry keys, hence this update is not backwards-compatible if
 you have configured OpenTelemetry. Please adapt your values to the new
 <code>values.yml</code> format.</p><p>This is of course reflected with a major version bump of the chart <code>version</code>.</p></blockquote><p>With v1.20, we have expanded the Kubewarden controller capabilities to
-configure OpenTelemetry integrations.</p><p>Until v1.19 inclusive, one could only configure the kubewarden-controller chart to
-inject the Opentelemetry collectors <a href=https://opentelemetry.io/docs/collector/architecture/#a-nameopentelemetry-agentarunning-as-an-agent>as a
+configure OpenTelemetry integrations.</p><p>Until v1.19 inclusive, one could only configure the <code>kubewarden-controller</code> chart to
+inject the OpenTelemetry collectors <a href=https://opentelemetry.io/docs/collector/architecture/#a-nameopentelemetry-agentarunning-as-an-agent>as a
 sidecar</a>
-on Pods in the Kubewarden stack.</p><p>From v1.20 onwards, in addition of configuring for sidecars, the controller
-accepts providing a custom OpentelemetryCollector configuration. This
+into Pods in the Kubewarden stack.</p><p>From v1.20 onward, the official Kubewarden Helm chart allows also to
+configure the Kubewarden stack to send telemetry and metrics data
+to an OpenTelemetry Collector that is managed by the administrator of the
+cluster. This
 configuration allows for running the Collector <a href=https://opentelemetry.io/docs/collector/architecture/#a-nameopentelemetry-collectorarunning-as-a-gateway>as a Gateway</a>
 in the same cluster. This architecture is useful for example when one wants the
-collector to receive tracing and metrics from more than one stack.</p><p>To achieve this, we have reformatted the values.yml of kubewarden-controller to
+collector to receive tracing and metrics from more than one stack.</p><p>To achieve this, we have reformatted the <code>values.yml</code> of <code>kubewarden-controller</code> to
 add a new key <code>telemetry.mode</code> which can take either the <code>sidecar</code> value or
 <code>custom</code> value. We have also reorganized the set of keys under <code>telemetry</code>.</p><p>Here is an example of the <code>values.yml</code> for <code>sidecar</code> mode:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># values.yaml</span>
 <span style=color:#f92672>telemetry</span>:
@@ -30,7 +32,7 @@ add a new key <code>telemetry.mode</code> which can take either the <code>sideca
     <span style=color:#f92672>metrics</span>:
       <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
 </code></pre></div><p>And here is an example for the <code>custom</code> mode configuring Kubewarden to point to
-a custom OpenTelemetryCollector:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># values.yaml</span>
+a custom OpenTelemetry Collector:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># values.yaml</span>
 <span style=color:#f92672>telemetry</span>:
   <span style=color:#f92672>mode</span>: <span style=color:#ae81ff>custom</span>
   <span style=color:#f92672>metrics</span>: <span style=color:#66d9ef>True</span>
@@ -41,8 +43,8 @@ a custom OpenTelemetryCollector:</p><div class=highlight><pre style=color:#f8f8f
     <span style=color:#f92672>otelCollectorCertificateSecret</span>: <span style=color:#e6db74>&#34;my-server-cert&#34;</span>
     <span style=color:#f92672>otelCollectorClientCertificateSecret</span>: <span style=color:#e6db74>&#34;my-client-cert&#34;</span>
 </code></pre></div><p>This Helm chart configuration is used for the Kubewarden controller, which takes
-care of configuring each PolicyServer, including the needed certificates.</p><p>We have refreshed our documentation pages to better showcase the sidecar mode,
-and added a new <a href=https://docs.kubewarden.io/howtos/telemetry/custom-otel-collector>example of the custom mode</a>.</p><p>Would you like to see more capabilities to interact with OTLP? Don&rsquo;t hesistate
+care of configuring each Policy Server instance, including the needed certificates.</p><p>We have refreshed our documentation pages to better showcase the sidecar mode,
+and added a new <a href=https://docs.kubewarden.io/howtos/telemetry/custom-otel-collector>example of the custom mode</a>.</p><p>Would you like to see more capabilities to interact with OpenTelemetry? Don&rsquo;t hesitate
 to get in touch!</p><h1 id=bug-fixes-and-dependency-updates>Bug Fixes and Dependency Updates</h1><p>As always, we&rsquo;ve addressed bugs and updated dependencies to ensure a smooth and
 reliable experience.</p><p>Worth noting is a <code>kwctl</code> fix when dealing with local custom certificates for
 authenticating against OCI repositories when the user incorrectly passes a
