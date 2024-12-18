@@ -1,9 +1,8 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Kubewarden 1.20 release</title><link rel=icon type=image/svg href=/favicon.svg><link rel=mask-icon href=/favicon.svg><link rel=stylesheet type=text/css href=/sass/blog.min.css?1734528576><script async defer src=https://buttons.github.io/buttons.js></script><script type=text/javascript src=//cdn.bizible.com/scripts/bizible.js async></script></head><body><header><div class=sub-header><a href><img src=/images/logo-kubewarden.svg alt=Kubewarden></a>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="IE=edge"><title>Kubewarden 1.20 release</title><link rel=icon type=image/svg href=/favicon.svg><link rel=mask-icon href=/favicon.svg><link rel=stylesheet type=text/css href=/sass/blog.min.css?1734534666><script async defer src=https://buttons.github.io/buttons.js></script><script type=text/javascript src=//cdn.bizible.com/scripts/bizible.js async></script></head><body><header><div class=sub-header><a href><img src=/images/logo-kubewarden.svg alt=Kubewarden></a>
 <a href=#main-menu id=main-menu-toggle class=menu-toggle aria-label="Open main menu"><span aria-hidden=true></span><span aria-hidden=true></span><span aria-hidden=true></span></a><nav id=main-menu class=main-menu aria-label="Main menu"><a href=#main-menu-toggle id=main-menu-close class=menu-close aria-label="Close main menu"><span class=sr-only>Close main menu</span>
 <span class="fa fa-close" aria-hidden=true></span></a><h2 id=main-menu-heading class=sr-only>Main menu</h2><ul class=menu><li><a href="https://artifacthub.io/packages/search?kind=13&sort=relevance&page=1" target=_blank class="btn no-bg">Policies</a></li><li><a href=https://charts.kubewarden.io/ target=_blank class="btn no-bg">Helm Charts</a></li><li><a href=https://docs.kubewarden.io/ target=_blank class="btn no-bg">Docs</a></li><li><a href="https://kubernetes.slack.com/?redir=%2Fmessages%2Fkubewarden" target=_blank class="btn no-bg">Slack</a></li><li><a href=https://twitter.com/kubewarden target=_blank class="btn no-bg">Twitter</a></li><li><a href=/#get-in-touch target=_blank class="btn no-bg">Community</a></li><li><a href=/blog target=_blank class="btn no-bg">Blog</a></li><li><a href=https://github.com/kubewarden class="btn github"><img src=/images/icon-github.svg><span>Github</span></a></li></ul></nav><a href=#main-menu-toggle class=backdrop tabindex=-1 aria-hidden=true hidden></a></div></header><link rel=stylesheet href=/css/blog.css><section class=intro><div class=bg-primary><div class="wrap grid-one"><div><h1 style=color:#fff><a href=/blog>The Kubewarden blog</a>
 <a href=/blog/index.xml><img src=/images/icon-rss.svg class=fill-white height=20></a></h1></div></div></div></section><main><section class=wrap><article><h1>Kubewarden 1.20 release</h1><p>Author: <author>Víctor Cuadrado Juan</author></p><p>Published: <time>18 Dec 2024</time></p><div id=blog-post-content><p>We&rsquo;re excited to announce the release of Kubewarden v1.20! This release brings
-a nice improvement for deploying with OpenTelemetry, some bug fixes, and a
-sneak-peak of upcoming policies.</p><h1 id=supporting-more-opentelemetry-deployment-scenarios>Supporting more Opentelemetry deployment scenarios</h1><blockquote><p>⚠️ <strong>IMPORTANT</strong>⚠️
+a nice improvement for deploying with OpenTelemetry and some bug fixes.</p><h1 id=supporting-more-opentelemetry-deployment-scenarios>Supporting more Opentelemetry deployment scenarios</h1><blockquote><p>⚠️ <strong>IMPORTANT</strong>⚠️
 The <code>kubewarden-controller</code> Helm chart has changed the <code>values.yml</code> schema
 for the OpenTelemetry keys, hence this update is not backwards-compatible if
 you have configured OpenTelemetry. Please adapt your values to the new
@@ -50,26 +49,7 @@ authenticating against OCI repositories when the user incorrectly passes a
 certificate in DER format (binary encoded) instead of PEM format (text, ASCII
 armored). Before, <code>kwctl</code> could stop with an error when trying to load the DER
 certificate. Now, <code>kwctl</code> has strenghtened PEM/DER recognition and <code>kwctl</code>
-informs better if one is using a DER certificate.</p><h1 id=expanding-the-corpus-of-policies>Expanding the corpus of policies</h1><p>Thanks to Kubewarden&rsquo;s capabilities with different programming languages, we
-can import and reuse existing policies. In this case, we have been working on
-adapting the corpus of policies under
-<a href=https://github.com/weaveworks/policy-library>github.com/weaveworks/policy-library</a>.</p><figure class=center><img src=/images/weaveworks-logo.png alt="Logo of Weaveworks"></figure><p>Weaveworks has been a pioneer in the field of Kubernetes security and
-compliance. They transitioned to a community-driven project with the closure of
-their start-up company at the beginning of 2024, which was a sad moment in the
-cloud native sphere. We thank Weaveworks and their contributors for their work
-on these policies, and we believe they are a good asset for Kubernetes users.</p><p>This corpus consists of hundreds of Rego policies in differing levels of
-maturity. To adapt them as Kubewarden policies, we needed to recreate their
-original metadata under their <code>policy.yml</code> into Kubewarden&rsquo;s <code>metadata.yml</code>,
-recheck their original Rego unit-tests, and build and ship them as OCI
-artifacts just as any Kubewarden policy. We performed the adaptation process with
-a one-shot script that you can see <a href=https://github.com/kubewarden/automation/blob/main/scripts/weaveworks>here</a>.</p><p>We have already evaluated a set of them, you can peruse the result in our new
-<a href=https://github.com/kubewarden/rego-policies-library>github.com/kubewarden/rego-policies-library</a>.
-This new repository is also the first monorepo for policies that Kubewarden team administers.</p><p>We have updated the GitHub reusable workflows and actions under
-<a href=https://github.com/kubewarden/github-actions>kubewarden/github-actions</a> to
-support testing and releasing policies under any path, which was needed for
-repositories with more than 1 policy such as our new monorepo.</p><p>In the following weeks we will perform the rollout of the policies into
-<a href=https://artifacthub.io>Artifact Hub</a>.</p><p>Do you have an open source corpus of policies that would like to see migrated
-to Kubewarden? Get in touch or open an issue!</p><h1 id=getting-in-touch>Getting in touch</h1><p>As always, we welcome your feedback and contributions. Feel free to reach out
+informs better if one is using a DER certificate.</p><h1 id=getting-in-touch>Getting in touch</h1><p>As always, we welcome your feedback and contributions. Feel free to reach out
 to us on <a href="https://kubernetes.slack.com/?redir=%2Fmessages%2Fkubewarden">Slack</a>
 and <a href=https://github.com/orgs/kubewarden/discussions>GitHub discussions</a>.</p></div><div><ul id=tags></ul></div><div></div></article></section></main><footer><p>&copy; 2024 Kubewarden Project Authors. All rights reserved.
 The Linux Foundation has registered trademarks and uses trademarks.
